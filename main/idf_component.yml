@@ -1,0 +1,36 @@
+## IDF Component Manager Manifest File
+dependencies:
+  lvgl/lvgl: "~8.3.0"
+  espressif/esp_lcd_st7701: "^1.1.1"
+  espressif/esp_lcd_panel_io_additions: "^1.0.1"
+
+  ## Required IDF version
+  idf:
+    version: ">=4.1.0"
+  bblanchon/arduinojson: "^6.21.3"  
+  home_i2c:
+    path: D:/esp_prj/global/home_i2c
+  home_8574:
+    path: D:/esp_prj/global/home_8574
+  home_8563:
+    path: D:/esp_prj/global/home_8563  
+  home_lm75:
+    path: D:/esp_prj/global/home_lm75  
+  iot_button:
+    path: D:/esp_prj/global/iot_button 
+  home_FT6X36:
+    path: D:/esp_prj/global/home_FT6X36  
+  backlight:
+    path: D:/esp_prj/global/backlight
+  storage:
+    path: D:/esp_prj/global/storage  
+  iptool:
+    path: D:/esp_prj/global/iptool     
+  buzzer:
+    path: D:/esp_prj/global/lvgl/icomp/buzzer  
+  smq_tftp:
+    path: D:/esp_prj/global/smq_tftp  
+  panel:
+    path: D:/esp_prj/global/lvgl/icomp/panel    
+  ilabel:
+    path: D:/esp_prj/global/lvgl/icomp/ilabel   

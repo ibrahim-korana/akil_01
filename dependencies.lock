@@ -1,0 +1,123 @@
+dependencies:
+  backlight:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\backlight
+      type: local
+    version: 1.0.0
+  bblanchon/arduinojson:
+    component_hash: 463812931f99cb7a554d64311288f537b43daaca3eed2427557b907af393447c
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 6.21.5
+  buzzer:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\buzzer
+      type: local
+    version: 1.0.0
+  espressif/cmake_utilities:
+    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 0.5.3
+  espressif/esp_io_expander:
+    component_hash: fbc0de4082fc7c207dc98a93a0ed83d1a929a4ecee83cc567afb406f3ee6d4a6
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.1
+  espressif/esp_lcd_panel_io_additions:
+    component_hash: 213d5c4a3c322a48c9f993d6bc2372206d34af95db34e87a3e02601bdcad7ce8
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.1
+  espressif/esp_lcd_st7701:
+    component_hash: e30b02ae74f442bddb1703344b0aa1c8fbd2ad3ddd3bf270ba9d34844c917509
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.1.1
+  home_8563:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\home_8563
+      type: local
+    version: 1.0.0
+  home_8574:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\home_8574
+      type: local
+    version: 1.0.0
+  home_FT6X36:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\home_FT6X36
+      type: local
+    version: 1.0.0
+  home_i2c:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\home_i2c
+      type: local
+    version: 1.0.0
+  home_lm75:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\home_lm75
+      type: local
+    version: 1.0.0
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.2.0
+  ilabel:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\ilabel
+      type: local
+    version: 1.0.0
+  iot_button:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\iot_button
+      type: local
+    version: 1.0.0
+  iptool:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\iptool
+      type: local
+    version: 1.0.0
+  lvgl/lvgl:
+    component_hash: 948bff879a345149b83065535bbc4a026ce9f47498a22881e432a264b9098015
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 8.3.11
+  panel:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\panel
+      type: local
+    version: 1.0.0
+  smq_tftp:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\smq_tftp
+      type: local
+    version: 1.0.0
+  storage:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\storage
+      type: local
+    version: 1.0.0
+manifest_hash: 4479b99981ddf13ee30a72635daf76463949336f4c5bc3b7f166370d2f7ca400
+target: esp32s3
+version: 1.0.0
