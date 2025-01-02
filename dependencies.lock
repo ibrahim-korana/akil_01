@@ -71,6 +71,12 @@ dependencies:
       path: D:\esp_prj\global\home_lm75
       type: local
     version: 1.0.0
+  ibutton:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\ibutton
+      type: local
+    version: 1.0.0
   idf:
     component_hash: null
     source:
@@ -94,12 +100,18 @@ dependencies:
       path: D:\esp_prj\global\iptool
       type: local
     version: 1.0.0
+  iswitch:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\iswitch
+      type: local
+    version: 1.0.0
   lvgl/lvgl:
-    component_hash: 948bff879a345149b83065535bbc4a026ce9f47498a22881e432a264b9098015
+    component_hash: d7c1ac037ae6e85d94897f807d6e7ba0946a83e720074fc95a4f6241da9f9f53
     source:
       service_url: https://api.components.espressif.com/
       type: service
-    version: 8.3.11
+    version: 8.4.0
   panel:
     component_hash: null
     source:
@@ -118,6 +130,6 @@ dependencies:
       path: D:\esp_prj\global\storage
       type: local
     version: 1.0.0
-manifest_hash: 4479b99981ddf13ee30a72635daf76463949336f4c5bc3b7f166370d2f7ca400
+manifest_hash: 9a6c4c7fed4322f4eb8505f7e77dec0cd1a95e545ca33481b891bdbcf95e14a5
 target: esp32s3
 version: 1.0.0

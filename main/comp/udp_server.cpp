@@ -64,9 +64,9 @@ void Udp_Server::_recv_proc(void *arg, struct udp_pcb *pcb, struct pbuf *pb,cons
         this_pb->next = NULL;
         //ESP_LOGD(UDP_SRV_TAG, "Received %d bytes from %s:%d", this_pb->len,
         //         ipaddr_ntoa(addr), port);
-        udp_msg_t msg = {
-            .len = this_pb->len,
-        };
+        udp_msg_t msg = {};
+        msg.len = this_pb->len;
+        
         msg.remote = malloc(sizeof(remote_t));
         if (msg.remote == NULL) jm=false;
         if (jm)

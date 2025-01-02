@@ -26,6 +26,10 @@ void global_default_config()
     GConfig->wifi_active = 1;
     GConfig->wifi_connected = 0;
     GConfig->time_int_sync = 1;
+
+    GConfig->active_page = 1; //ilk sayfa
+    GConfig->max_page = 4; //1-4 arası sayfa var
+
     
    // strcpy((char*)GConfig->wifi_ssid,"ice");
    // strcpy((char*)GConfig->wifi_pass,"ice12345");

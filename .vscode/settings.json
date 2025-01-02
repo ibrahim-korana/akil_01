@@ -7,5 +7,18 @@
     ],
     "idf.portWin": "COM4",
     "idf.toolsPathWin": "d:\\.espressif",
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "memory": "cpp",
+        "format": "cpp",
+        "future": "cpp",
+        "istream": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "variant": "cpp",
+        "chrono": "cpp"
+    }
 }

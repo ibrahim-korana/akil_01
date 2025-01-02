@@ -3,6 +3,25 @@
 #define _CORE_H
 
 #include "stdint.h"
+#include "esp_event.h"
+
+ESP_EVENT_DECLARE_BASE(AKIL_EVENTS);
+
+enum {
+    MSG_CLOSE_CLK,
+};
+
+enum {
+    AEV_BUTTON_PRESSED,
+    AEV_PAGE_CHANGED,
+    AEV_GOT_IP,
+    AEV_DISCONNECTED,
+    AEV_PCHANGE_OFF,
+    AEV_PCHANGE_ON,
+    AEV_BACKLITE_CHANGED,
+    AEV_BACKLITE_CHANGING,
+    AEV_SAVER_CHANGED,
+};
 
 typedef struct {
     uint8_t home_default;
@@ -23,6 +42,11 @@ typedef struct {
     char wifi_ssid[16];
     char wifi_pass[16];
     uint8_t time_int_sync;
+
+
+    //-------------------
+    uint8_t active_page;
+    uint8_t max_page;
 
 } status_t;
 

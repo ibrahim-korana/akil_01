@@ -37,6 +37,7 @@ const char* MAIN_TAG = "MAIN";
 
 ESP_EVENT_DEFINE_BASE(LWIFI_EVENTS);
 ESP_EVENT_DEFINE_BASE(UDP_EVENT);
+ESP_EVENT_DEFINE_BASE(AKIL_EVENTS);
 
 status_t GlobalConfig = {};
 Storage disk = Storage();
@@ -60,12 +61,15 @@ Udp_Server udp_server = Udp_Server();
 #include "tools/mainconfig.cpp"
 #include "tools/udp_server_callback.cpp"
 #include "screen/startup.h"
+#include "screen/ana_ekran.h"
 
 void screen_exit(void *arg, uint8_t Scr_num)
 {
     if (Scr_num==1) { 
         //Startup Sayfasından cıktı
         startup_destroy(); 
+        anaekran_init(&GlobalConfig, screen_exit, &disk, &Lang);
+        anaekran_load(); 
         if(GlobalConfig.wifi_active==1) 
         {
             esp_wifi_set_ps(WIFI_PS_NONE); 
@@ -76,6 +80,7 @@ void screen_exit(void *arg, uint8_t Scr_num)
             udp_server.start(0xD002);
             ESP_ERROR_CHECK(esp_event_handler_register(UDP_EVENT, UDP_EVENT_RECV, on_udp_recv, NULL));
             smq_tftp_start();
+
         }             
     }
 }
@@ -96,6 +101,7 @@ extern "C" void app_main()
     Lang.init("TR-tr",&disk);
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register(LWIFI_EVENTS, ESP_EVENT_ANY_ID, wifi_change_events, NULL, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(AKIL_EVENTS, ESP_EVENT_ANY_ID, akil_change_events, NULL, NULL));
 
     ESP_LOGI(MAIN_TAG, "Startrup Loading");
     startup_init(&GlobalConfig, screen_exit,&Lang); 
