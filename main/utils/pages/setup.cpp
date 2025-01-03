@@ -3,15 +3,14 @@
 
 #include "subpages/backlite_ayar.h"
 #include "subpages/screen_saver.h"
-
 #include "subpages/wifi_ayar.h"
+#include "subpages/admin_ayar.h"
 
 LV_IMG_DECLARE(backlite);
 LV_IMG_DECLARE(wifi);
 LV_IMG_DECLARE(defa);
 LV_IMG_DECLARE(admin0);
 LV_IMG_DECLARE(screensaver_60)
-
 
 CoreAyar *aktif_ekran = NULL;
 void *subsribe=NULL;
@@ -21,6 +20,14 @@ void Setup_Page::add_btn(local_ibutton_t *btn)
    btn->next = (local_ibutton_t *)buttons;
    buttons = btn;
 }
+
+ void Setup_Page::pass_cb(void * s, lv_msg_t * m)
+ {
+    Setup_Page *ths = (Setup_Page *) lv_msg_get_user_data(m);
+    printf("Admin Pass True\n");
+    ths->admin = true;
+   // aktif_ekran = new Admin_Ayar(lv_scr_act(),ths->status, ths->Lng);
+ }
 
 void Setup_Page::sub_button_cb(void * s, lv_msg_t * m)
 {
@@ -43,6 +50,17 @@ void Setup_Page::panel_cb(lv_event_t * e) {
       }
 }
 
+void Setup_Page::defevent_cb(lv_event_t * e)
+{
+    lv_obj_t * obj = lv_event_get_current_target(e);
+    Setup_Page *aa = (Setup_Page *)lv_event_get_user_data(e);
+    if (strcmp(lv_msgbox_get_active_btn_text(obj),"Evet")==0)
+      {
+         ESP_ERROR_CHECK(esp_event_post(AKIL_EVENTS, AEV_CONFIG_SAVE_DEFULT, NULL, 0, portMAX_DELAY));  
+      }
+    lv_msgbox_close(aa->mbox1); 
+}
+
 void Setup_Page::Lcallback(void *arg, const void *inx)
 {
     Setup_Page *my = (Setup_Page *)arg;
@@ -61,7 +79,30 @@ void Setup_Page::Lcallback(void *arg, const void *inx)
         {
             aktif_ekran = new Wifi_Ayarlari(lv_scr_act(), my->status, my->Lng);
         }   
+        if (strcmp((char *)inx,"ADM")==0)
+        {
+            if (!my->admin)
+            {
+                NIPassword *ps1 = new NIPassword(my->status->security_adm_pass,"",4,false);                
+                ps1->active();
+            } else {
+                aktif_ekran = new Admin_Ayar(lv_scr_act(),my->status, my->Lng);
+            }         
+        } 
 
+        if (strcmp((char *)inx,"DEF")==0)
+        {
+            if (!my->admin)
+            {
+                NIPassword *ps1 = new NIPassword(my->status->security_adm_pass,"",4,false);                
+                ps1->active();
+            } else {
+                static const char * btns[] = {"Evet", "Hayir", ""};
+                my->mbox1 = lv_msgbox_create(NULL, "Dikkat", "Ayarlar, default degerlere alinarak cihaz resetlenecek. Eminmisiniz?", btns, true);
+                lv_obj_add_event_cb(my->mbox1, defevent_cb, LV_EVENT_VALUE_CHANGED, (void *)my);
+                lv_obj_center(my->mbox1);
+            }                           
+        }   
         if (aktif_ekran!=NULL) ESP_ERROR_CHECK(esp_event_post(AKIL_EVENTS, AEV_PCHANGE_OFF, NULL, 0, portMAX_DELAY));  
     }
 
@@ -106,7 +147,8 @@ void Setup_Page::icerik(void)
     ii->btn = new IButton(mpanel,&defa,ww,ww,opa,tck,(void *)this,Lcallback,"DEF",Lng->get_text("default"));  
     add_btn(ii);
 
-    subsribe = lv_msg_subscribe(MSG_CLOSE_CLK, sub_button_cb, NULL);
+    subs0 = lv_msg_subscribe(MSG_CLOSE_CLK, sub_button_cb, NULL);
+    subs1 = lv_msg_subscribe(PASS_PASSWORD_OK, pass_cb, (void *)this);
 
 }
 
@@ -122,6 +164,7 @@ void Setup_Page::unregister(void)
             delete temp_tt;
             temp_tt = NULL;
       };
-      lv_msg_unsubscribe(subsribe);
+      lv_msg_unsubscribe(subs0);
+      lv_msg_unsubscribe(subs1);
 }
 

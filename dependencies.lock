@@ -82,6 +82,12 @@ dependencies:
     source:
       type: idf
     version: 5.2.0
+  ikeyboard:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\ikeyboard
+      type: local
+    version: 1.0.0
   ilabel:
     component_hash: null
     source:
@@ -112,6 +118,18 @@ dependencies:
       service_url: https://api.components.espressif.com/
       type: service
     version: 8.4.0
+  niinput:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\niinput
+      type: local
+    version: 1.0.0
+  nipassword:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\lvgl\icomp\nipassword
+      type: local
+    version: 1.0.0
   panel:
     component_hash: null
     source:
@@ -130,6 +148,6 @@ dependencies:
       path: D:\esp_prj\global\storage
       type: local
     version: 1.0.0
-manifest_hash: 9a6c4c7fed4322f4eb8505f7e77dec0cd1a95e545ca33481b891bdbcf95e14a5
+manifest_hash: 9fef5a46751137d701a450282ef6ef4b4320261d4bba06831c6766e5733a2fbf
 target: esp32s3
 version: 1.0.0

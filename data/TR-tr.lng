@@ -18,4 +18,16 @@ wifion&Wifi ON&
 wifioff&Wifi OFF&
 timsyncon&Time Syn ON&
 timsyncoff&Time Syn OFF&
+mes1&Ayarlar Kaydedilerek Cihaz Resetlenecek&
+dikkat&DIKKAT&
+yonetimayar&Admin&
+maxtemp&Max Set&
+mintemp&Min Set&
+tempcal&Kalibrasyon&
+tempread&Isi Gon.Suresi&
+udpon&UDP On&
+udpoff&UDP Off&
+rson&RS485 On&
+rsoff&RS485 Off&
+
 

@@ -1,4 +1,51 @@
 
+
+
+uint8_t Global_send_type = 0;
+enum {
+    SEND_TEMPERATURE,
+    SEND_TEMP_SET,
+};
+
+void send_transmisyon_task(void *arg)
+{
+    if (Global_send_type==SEND_TEMPERATURE)
+    {
+        //Temparature gönder
+        uint8_t cur_temp = (uint8_t)GlobalConfig.current_temp;
+        printf("Send Temparature %d\n",cur_temp);
+        if (GlobalConfig.wifi_connected==1 && GlobalConfig.udp_active==1) 
+        {
+            //UDP üzerinden gönder
+        }
+        if (GlobalConfig.rs485_active==1)
+        {
+            //RS485 üzerinden gönder
+        }
+    }
+    if (Global_send_type==SEND_TEMP_SET)
+    {
+        //Temparature set gönder
+        printf("Send Temp SET \n");
+    }
+
+    vTaskDelete(NULL);
+}
+
+void temparature_callback(void * s, lv_msg_t * m)
+{
+    //MSG_TEMPERATURE geldiğinde değişiklik varsa gerekli arayuzlere gönderir
+    static uint8_t tmp_temparature = 0;
+    uint8_t cur_temp = (uint8_t)GlobalConfig.current_temp;
+    if (cur_temp!=tmp_temparature)
+    {
+        tmp_temparature = cur_temp;
+        //Arayuzlere gönder
+        Global_send_type = SEND_TEMPERATURE;
+        xTaskCreate(send_transmisyon_task,"Send_Temp",2048,NULL,5,NULL);        
+    }  
+}
+
 void wifi_change_events(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
 {
    // printf("wifi %ld\n",id);
@@ -39,6 +86,13 @@ void wifi_change_events(void* handler_args, esp_event_base_t base, int32_t id, v
 
 void akil_change_events(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
 {
+    if (id==AEV_OUT_TEMPSET_CHANGED)
+    {
+        //Termostat Set degişti gönder
+        Global_send_type = SEND_TEMP_SET;
+        xTaskCreate(send_transmisyon_task,"Send_Temp",2048,NULL,5,NULL);
+    }
+
     if (id==AEV_BUTTON_PRESSED)
     {
        // ESP_LOGI("EVENT","Button Pressed");
@@ -75,5 +129,25 @@ void akil_change_events(void* handler_args, esp_event_base_t base, int32_t id, v
         disk.write_file(GLOBAL_FILE,&GlobalConfig,sizeof(status_t), 0);
         backlight.ss_set_duration(GlobalConfig.screen_saver);
         ESP_LOGI("EVENT","Screen Saver Changed %d",*data);
+    }
+    if(id==AEV_CONFIG_SAVE)
+    {
+        disk.write_file(GLOBAL_FILE,&GlobalConfig,sizeof(status_t), 0);
+        ESP_LOGI("EVENT","Config Save  and RESET");
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        esp_restart();
+    }
+    if(id==AEV_CONFIG_SAVE_NORESET)
+    {
+        disk.write_file(GLOBAL_FILE,&GlobalConfig,sizeof(status_t), 0);
+        ESP_LOGI("EVENT","Config Save");
+    }
+    if(id==AEV_CONFIG_SAVE_DEFULT)
+    {
+        global_default_config();
+        disk.write_file(GLOBAL_FILE,&GlobalConfig,sizeof(status_t), 0);
+        ESP_LOGI("EVENT","Config Save and RESET");
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        esp_restart();
     }
 }

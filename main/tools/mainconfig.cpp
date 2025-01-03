@@ -185,11 +185,28 @@ static void lvgl_flush_cb(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
     lv_disp_flush_ready(drv);
 }
 
+void Read_Temperature(void)
+{
+    float utemp = 0.0;
+    hlm75.read_temperature(&utemp);
+    if (utemp>0) GlobalConfig.current_temp = utemp;
+    if (GlobalConfig.current_temp>0) 
+    {
+        float katsayi = 1.0;
+        if (GlobalConfig.isi_kalibrasyon>0) katsayi=(GlobalConfig.isi_kalibrasyon/100.0);
+        GlobalConfig.current_temp = GlobalConfig.current_temp * katsayi;
+        //printf("%.2f\n",GlobalConfig.current_temp);
+        //ESP_ERROR_CHECK(esp_event_post(ALARM_EVENTS, EVENT_TEMPARATURE, &GlobalConfig.current_temp, sizeof(float), portMAX_DELAY));
+        lv_msg_send(MSG_TEMPERATURE,NULL);
+    }
+}
+
 static void lvgl_touch_cb(lv_indev_drv_t * drv, lv_indev_data_t * data)
 {
     TPoint xy0;
     TEvent ev;
     lv_point_t xy; 
+    static uint16_t count1=0;
        
     if (tp.get_event(&xy0,&ev)) {
         xy.x = (lv_coord_t)xy0.y;
@@ -208,6 +225,17 @@ static void lvgl_touch_cb(lv_indev_drv_t * drv, lv_indev_data_t * data)
         data->state = LV_INDEV_STATE_RELEASED;
         data->point = xy;
     } 
+
+    //Isı okuma süresi varsa Isı okuma yapar
+    if (GlobalConfig.isi_okuma_suresi>0)
+    {
+        if (count1++>(GlobalConfig.isi_okuma_suresi*3))
+        {
+            count1=0;
+            Read_Temperature();
+        }
+    }
+
     
 }
 

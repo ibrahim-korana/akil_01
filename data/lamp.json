@@ -1,0 +1,44 @@
+{
+    "lamps": [
+        {
+            "name":"lamp",
+            "id": 1,
+			"rname":"LM01",
+            "local": 0,
+            "text":"Salon 1",
+            "width": 120,
+            "height" : 120,
+            "new_track" : 0
+        },
+        {
+            "name":"lamp",
+            "id": 2,
+			"rname":"LM04",
+            "local": 0,
+            "text":"Salon 2",
+            "width": 120,
+            "height" : 120,
+            "new_track" : 0
+        },
+        {
+            "name":"lamp",
+            "id": 3,
+			"rname":"LM03",
+            "local": 0,
+            "text":"Mutfak",
+            "width": 120,
+            "height" : 120,
+            "new_track" : 0
+        },
+        {
+            "name":"lamp",
+            "id": 4,
+			"rname":"LM02",
+            "local": 0,
+            "text":"Banyo",
+            "width": 120,
+            "height" : 120,
+            "new_track" : 0
+        }
+    ]
+}

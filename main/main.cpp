@@ -55,6 +55,7 @@ static lv_disp_drv_t disp_drv;
 static lv_disp_draw_buf_t disp_buf;
 Language Lang = Language();
 Udp_Server udp_server = Udp_Server(); 
+lamps_t *lamp_list = NULL;
 
 
 #include "tools/events.cpp"
@@ -68,7 +69,10 @@ void screen_exit(void *arg, uint8_t Scr_num)
     if (Scr_num==1) { 
         //Startup Sayfasından cıktı
         startup_destroy(); 
+        Read_Temperature();
+        lv_msg_subscribe(MSG_TEMPERATURE, temparature_callback, NULL);
         anaekran_init(&GlobalConfig, screen_exit, &disk, &Lang);
+        anaekran_set_lamp(lamp_list);
         anaekran_load(); 
         if(GlobalConfig.wifi_active==1) 
         {
@@ -80,7 +84,6 @@ void screen_exit(void *arg, uint8_t Scr_num)
             udp_server.start(0xD002);
             ESP_ERROR_CHECK(esp_event_handler_register(UDP_EVENT, UDP_EVENT_RECV, on_udp_recv, NULL));
             smq_tftp_start();
-
         }             
     }
 }
@@ -95,8 +98,11 @@ extern "C" void app_main()
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_LOGI(MAIN_TAG,"START");
 
-    pre_config(&disk, &GlobalConfig);
+    pre_config(&disk, &GlobalConfig, lamp_list);
     mainconfig();
+
+    read_lamps();
+    list_lamp();
 
     Lang.init("TR-tr",&disk);
 

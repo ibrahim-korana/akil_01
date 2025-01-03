@@ -15,7 +15,8 @@ void Main_Page::icerik(void)
     img1 = lv_img_create(mpanel);
     lv_img_set_src(img1,"A:/firma.bin");
     lv_obj_align(img1, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_size(img1, 300, 200);       
+    lv_obj_set_size(img1, 300, 200);    
+           
 }     
 
    

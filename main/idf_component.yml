@@ -38,3 +38,9 @@ dependencies:
     path: D:/esp_prj/global/lvgl/icomp/ibutton  
   iswitch:
     path: D:/esp_prj/global/lvgl/icomp/iswitch    
+  ikeyboard:
+    path: D:/esp_prj/global/lvgl/icomp/ikeyboard   
+  nipassword:
+    path: D:/esp_prj/global/lvgl/icomp/nipassword 
+  niinput:
+    path: D:/esp_prj/global/lvgl/icomp/niinput    

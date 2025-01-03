@@ -26,7 +26,7 @@ class Content {
         ~Content(){
             free(main_panel);
         };
-       
+        void set_lamp(lamps_t *lamp) {lamp_list = lamp;};
         lv_obj_t *get(void) {return mpanel;}
     private:
         lv_obj_t *parent, *mpanel;
@@ -36,6 +36,7 @@ class Content {
         uint8_t page_index;
         Storage *disk;
         Language *Lng;
+        lamps_t *lamp_list = NULL;
 
         SubContent *Active_Page=NULL; 
         void page_create(void);

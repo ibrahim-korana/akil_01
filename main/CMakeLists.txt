@@ -10,11 +10,15 @@ idf_component_register(
     SRCS "utils/header.cpp"
     SRCS "utils/content.cpp"
 
+    SRCS "utils/pages/lampapage.cpp"
     SRCS "utils/pages/mainpage.cpp"
     SRCS "utils/pages/setup.cpp"
         SRCS "utils/pages/subpages/backlite_ayar.cpp"
         SRCS "utils/pages/subpages/screen_saver.cpp"
         SRCS "utils/pages/subpages/wifi_ayar.cpp"
+        SRCS "utils/pages/subpages/admin_ayar.cpp"
+    SRCS "utils/pages/termostat.cpp"    
+    
 
     SRCS "images/bg.c"
     SRCS "images/logo.c"
@@ -32,6 +36,14 @@ idf_component_register(
     SRCS "images/admin0.c"
     SRCS "images/screensaver_60.c"
     SRCS "images/save.c"
+    SRCS "images/digi80.c"
+    SRCS "images/sag_buyuk.c"
+    SRCS "images/sol_buyuk.c"
+    SRCS "images/hmin_b.c"
+    SRCS "images/lamba1_on_60.c"
+    SRCS "images/lamba1_off_60.c"
+    SRCS "images/lamba2_on_60.c"
+    SRCS "images/lamba2_off_60.c"
 
     INCLUDE_DIRS ""
 )

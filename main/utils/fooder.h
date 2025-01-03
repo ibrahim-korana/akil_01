@@ -8,7 +8,6 @@
 LV_IMG_DECLARE(sag_60)
 LV_IMG_DECLARE(sol_60)     
 
-
 class Fooder {
     public:
         Fooder(status_t *stat, lv_obj_t *par, uint8_t yukseklik)
@@ -37,6 +36,11 @@ class Fooder {
             ip = new ILabel(mpanel,150,30,0,0,LV_ALIGN_CENTER,&lv_font_montserrat_14,lv_color_hex(0xFFFFFF));
             ip->set_text(status->current_ip);
             lv_obj_align(ip->get(),LV_ALIGN_CENTER,0,0); 
+            if (status->wifi_active==1) {
+                lv_obj_clear_flag(ip->get(),LV_OBJ_FLAG_HIDDEN);
+            } else {
+                lv_obj_add_flag(ip->get(),LV_OBJ_FLAG_HIDDEN);
+            }
 
             ESP_ERROR_CHECK(esp_event_handler_instance_register(AKIL_EVENTS, ESP_EVENT_ANY_ID, akil_events, (void *) this, NULL));
                                          

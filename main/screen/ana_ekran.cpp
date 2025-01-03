@@ -17,12 +17,17 @@ status_t *an_config = NULL;
 exit_callback_t an_callback = NULL;
 Storage *an_dsk;
 Language *Lng;
+lamps_t *lamp_list = NULL;
 
 static lv_obj_t *screen_container;
 static lv_style_t style_bg;
 
 LV_IMG_DECLARE(bg);
 
+void anaekran_set_lamp(lamps_t *lamp)
+{
+    lamp_list = lamp;
+}
 
 void an_create_styles(void)
 {

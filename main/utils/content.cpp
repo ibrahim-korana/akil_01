@@ -5,6 +5,8 @@
 
 #include "pages/mainpage.h"
 #include "pages/setup.h"
+#include "pages/termostat.h"
+#include "pages/lambapage.h"
 
 void Content::page_create()
 {
@@ -18,6 +20,17 @@ void Content::page_create()
     if (status->active_page==1)
     {       
         Active_Page = (SubContent *) new Main_Page(status,mpanel,disk, Lng);
+        ok=true;
+    }
+    if (status->active_page==2)
+    {       
+        Active_Page = (SubContent *) new Termostat_Page(status,mpanel,disk);
+        ok=true;
+    }
+    if (status->active_page==3)
+    {       
+        Active_Page = (SubContent *) new Lamba_Page(status,mpanel,disk);
+        Active_Page->set_lamps(lamp_list);
         ok=true;
     }
     if (status->active_page==4)
