@@ -36,7 +36,7 @@ void Udp_Server::_on_broadcast(void *handler_arg, esp_event_base_t base,int32_t 
     udp_broadcast_t *msg = (udp_broadcast_t *)event_data;
     struct pbuf *send_pb = pbuf_alloc(PBUF_TRANSPORT, msg->len, PBUF_RAM);
     memcpy(send_pb->payload, msg->payload, msg->len);
-    ESP_LOGI(UDP_SRV_TAG, "Broadcast >> %d bytes", send_pb->len);
+   // ESP_LOGI(UDP_SRV_TAG, "Broadcast >> %d bytes", send_pb->len);
     udp_sendto(self->pcb, send_pb, IP_ADDR_BROADCAST, msg->port);
     pbuf_free(send_pb);
     free(msg->payload);
@@ -168,8 +168,8 @@ udp_msg_t *Udp_Server::send_receive_unicast(remote_t *remote, const uint8_t *dat
 {
     struct pbuf *send_pb = pbuf_alloc(PBUF_TRANSPORT, len, PBUF_RAM);
     memcpy(send_pb->payload, data, len);
-    ESP_LOGD(UDP_SRV_TAG, "Send %d bytes to %s:%d", send_pb->len,
-             ipaddr_ntoa(&remote->addr), remote->port);
+   // ESP_LOGD(UDP_SRV_TAG, "Send %d bytes to %s:%d", send_pb->len,
+   //          ipaddr_ntoa(&remote->addr), remote->port);
     
     udp_sendto(pcb, send_pb, &remote->addr, remote->port);
     pbuf_free(send_pb);

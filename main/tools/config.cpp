@@ -7,7 +7,7 @@
 
 Storage *GDisk;
 status_t *GConfig; 
-lamps_t *lamps = NULL;
+
 
 const char *CONFIGTAG = "CONFIG";
 
@@ -16,7 +16,7 @@ void global_default_config()
     GConfig->home_default = 1; 
     GConfig->backlight = 128;
     GConfig->screen_saver = 15;
-    strcpy((char*)GConfig->cihaz_adi, "Akil Anahtar");
+    strcpy((char*)GConfig->cihaz_adi, "Akil Anahtar (LV)");
     strcpy((char*)GConfig->current_ip, "");
     strcpy((char*)GConfig->current_gw, "");
     GConfig->max_temp = 31;
@@ -25,12 +25,22 @@ void global_default_config()
     GConfig->isi_okuma_suresi = 50;
     GConfig->current_temp = 0.0;
     GConfig->current_set = 18;
+    GConfig->sensor_no = 1;
+    GConfig->retry_count = 20;
+    strcpy((char *)GConfig->current_server_ip, "0");
+    GConfig->have_current_server_ip = false;
+    GConfig->temp_stat = 0;
+    GConfig->temp_current_stat=0;
+    GConfig->termostat_local = 0;
 
     GConfig->rs485_active = 0;
-    GConfig->udp_active = 0;
-    GConfig->wifi_active = 0;
+    GConfig->udp_active = 1;
+    GConfig->wifi_active = 1;
     GConfig->wifi_connected = 0;
     GConfig->time_int_sync = 0;
+
+    GConfig->r1_stat = false;
+    GConfig->r2_stat = false;
 
     GConfig->active_page = 1; //ilk sayfa
     GConfig->max_page = 4; //1-4 arası sayfa var
@@ -39,8 +49,8 @@ void global_default_config()
     
    // strcpy((char*)GConfig->wifi_ssid,"ice");
    // strcpy((char*)GConfig->wifi_pass,"ice12345");
-     strcpy((char*)GConfig->wifi_ssid,"IMS_YAZILIM");
-     strcpy((char*)GConfig->wifi_pass,"mer6514a4c");
+     strcpy((char*)GConfig->wifi_ssid,"ICE_Device");
+     strcpy((char*)GConfig->wifi_pass,"ice12345");
 
     GDisk->file_control(GLOBAL_FILE);
     GDisk->write_file(GLOBAL_FILE, GConfig,sizeof(status_t),0);
@@ -55,11 +65,11 @@ void global_default_config()
 }
 
 
-void pre_config(Storage *dsk, status_t *gconf, lamps_t *lamp_list)
+void pre_config(Storage *dsk, status_t *gconf)
 {
     GConfig = gconf;
     GDisk = dsk;
-    lamps = lamp_list;
+    
     gpio_config_t intConfig = {};
     intConfig.pin_bit_mask = (1ULL<<LCD_RESET);
     intConfig.mode         = GPIO_MODE_OUTPUT;
@@ -81,6 +91,8 @@ void pre_config(Storage *dsk, status_t *gconf, lamps_t *lamp_list)
     ret = GDisk->init();
     ESP_ERROR_CHECK (ret);
 
+    
+
     GDisk->read_file(GLOBAL_FILE,GConfig,sizeof(status_t), 0);
     if (GConfig->home_default==0 ) {
         //Network ayarları diskte kayıtlı değil. Kaydet.
@@ -89,84 +101,5 @@ void pre_config(Storage *dsk, status_t *gconf, lamps_t *lamp_list)
          GDisk->read_file(GLOBAL_FILE,GConfig,sizeof(status_t),0);
          if (GConfig->home_default==0 ) ESP_LOGW(CONFIGTAG, "Global Initilalize File ERROR !...");
     }
-}
-
-void list_lamp(void)
-{
-    lamps_t *target = lamps;
-    ESP_LOGI(CONFIGTAG,"     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    ESP_LOGI(CONFIGTAG,"     LAMPS");
-    ESP_LOGI(CONFIGTAG,"     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); 
-    while(target)
-      {
-        ESP_LOGI(CONFIGTAG,"     %3d %-20s %d %-20s %d %d %s", 
-              target->id,
-              target->name,
-              target->local,
-              target->text,
-              target->width,
-              target->height,
-              target->iname
-              );
-          target=(lamps_t *)target->next;
-      }
-    ESP_LOGI(CONFIGTAG,"     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
-}
-
-
-void add_lamps(lamps_t *lc )
-{
-  lc->next = (lamps_t *)lamps;
-  lamps = lc;
-}
-
-void read_lamps(void)
-{
-    const char *name1="/config/lamp.json";
-    if (GDisk->file_search(name1))
-      {
-        int fsize = GDisk->file_size(name1); 
-        char *buf = (char *) malloc(fsize+5);
-        if (buf==NULL) {ESP_LOGE(CONFIGTAG, "memory not allogate"); return;}
-        FILE *fd = fopen(name1, "r");
-        if (fd == NULL) {ESP_LOGE(CONFIGTAG, "%s not open",name1); return;}
-        fread(buf, fsize, 1, fd);
-        fclose(fd);
-        DynamicJsonDocument doc(3000);
-        DeserializationError error = deserializeJson(doc, buf);
-
-        if (error) {
-          ESP_LOGE(CONFIGTAG,"deserializeJson() failed: %s",error.c_str());
-          return;
-        }
-        for (JsonObject function : doc["lamps"].as<JsonArray>()) {
-          const char* a_name = function["name"];
-          const char* i_name = function["rname"];
-          const char* a_text = function["text"];
-          int a_id = function["id"];
-          int a_local = function["local"];           
-          int a_w = function["width"]; 
-          int a_h = function["height"]; 
-          int a_nt = function["new_track"];          
-          if (a_w==0) a_w=90;
-          if (a_h==0) a_h=90;
-         
-          lamps_t *bb0 = (lamps_t *)calloc(1, sizeof(lamps_t)); 
-          strcpy(bb0->name,a_name);
-          strcpy(bb0->text,a_text);
-          if (i_name!=NULL) {
-              strcpy(bb0->iname,i_name);
-          } else strcpy(bb0->iname,"");
-          bb0->id = a_id;
-          bb0->local = a_local;
-          bb0->width = a_w;
-          bb0->height = a_h;
-          bb0->new_track = a_nt;
-          add_lamps(bb0);
-        }      
-        doc.clear();                       
-        free(buf);
-      } else ESP_LOGW(CONFIGTAG, "Config File BULUNAMADI !...");
-   return;   
 }
 

@@ -236,6 +236,19 @@ static void lvgl_touch_cb(lv_indev_drv_t * drv, lv_indev_data_t * data)
         }
     }
 
+    if (ROLE1_CHANGE)
+    {
+        h8574.pin_write(ROLE1,GlobalConfig.r1_stat);
+        ROLE1_CHANGE=false;
+    }
+    if (ROLE2_CHANGE)
+    {
+        h8574.pin_write(ROLE2,GlobalConfig.r2_stat);
+        ROLE2_CHANGE=false;
+    }
+
+
+
     
 }
 
@@ -253,10 +266,10 @@ void mainconfig(void)
     bus.device_list();
 
     //bus içine 8574 ilave ediliyor
-    ESP_ERROR_CHECK_WITHOUT_ABORT(h8574.init_device(&bus,0x20));
+    ESP_ERROR_CHECK_WITHOUT_ABORT(h8574.init_device(&bus,0x20,0x00));
     ESP_LOGI(MAIN_TAG,"IO Entegresi bulundu");
     h8574.pin_write(6,0);
-    ESP_ERROR_CHECK_WITHOUT_ABORT(h8563.init_device(&bus,0x00));
+    ESP_ERROR_CHECK_WITHOUT_ABORT(h8563.init_device(&bus,0x00,0x00));
     ESP_LOGI(MAIN_TAG,"Saat Entegresi bulundu");
     struct tm rtcinfo;
     bool Valid=false;
@@ -287,7 +300,7 @@ void mainconfig(void)
         }
     }
 
-    ESP_ERROR_CHECK_WITHOUT_ABORT(hlm75.init_device(&bus,0x4F));
+    ESP_ERROR_CHECK_WITHOUT_ABORT(hlm75.init_device(&bus,0x4F,0x00));
     ESP_LOGI(MAIN_TAG,"Sıcaklık sensörü bulundu");
     lm75_config_t config = {};
         config.mode           = LM75_MODE_SHUTDOWN;
@@ -306,9 +319,9 @@ void mainconfig(void)
     rs485_cfg.oe_pin   = RS485_DIR;
     rs485_cfg.baud     = 57600;
 
-   // rs485.initialize(&rs485_cfg, &rs485_callback, &broadcast_callback, (gpio_num_t)-1);
+    rs485.initialize(&rs485_cfg, &rs485_callback, &rs485_callback, (gpio_num_t)-1);
 
-    ESP_ERROR_CHECK_WITHOUT_ABORT(tp.init_device(&bus,0x38));
+    ESP_ERROR_CHECK_WITHOUT_ABORT(tp.init_device(&bus,0x38,0x00));
     ESP_LOGI(MAIN_TAG,"Dokunmatik Panel bulundu");
     tp.begin(22,LCD_V_RES,LCD_H_RES);
     tp.setRotation(3);

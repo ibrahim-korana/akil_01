@@ -24,7 +24,7 @@
 #include "nvs_flash.h"
 
 
-#define MAXIMUM_RETRY 10
+#define MAXIMUM_RETRY 30
 
 #define AP_WIFI_SSID "iceAP"
 #define AP_WIFI_PASSWORD "ice12345"
@@ -70,10 +70,10 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         ESP_ERROR_CHECK(esp_event_post(LWIFI_EVENTS, EVENT_LWIFI_DISCONNECTED, NULL, 0, portMAX_DELAY)); 
-        if (s_retry_num < MAXIMUM_RETRY) {
+        if (s_retry_num < config1->retry_count) {
             esp_wifi_connect();
             s_retry_num++;
-            ESP_LOGI(TAG_WIFI, "%d retry to connect to the AP",MAXIMUM_RETRY-s_retry_num);
+            ESP_LOGI(TAG_WIFI, "%d retry to connect to the AP",config1->retry_count-s_retry_num);
         } else wifi_ap();
 	} else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
 		ESP_LOGI(TAG_WIFI, "Ip Alındı");

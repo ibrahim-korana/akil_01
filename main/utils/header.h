@@ -36,6 +36,7 @@ class Header {
             i_wifi = new IButton(mpanel,&Wifi_alarm_5_48,h,h,50,tck,NULL,NULL,"WIFI"); 
             lv_obj_align_to(i_wifi->get(),i_page->get(),LV_ALIGN_OUT_RIGHT_MID,0,0);
             if (status->wifi_active==0) lv_obj_add_flag(i_wifi->get(), LV_OBJ_FLAG_HIDDEN); //eğer wifi kapalı ise ikonu gizle.
+            lv_obj_add_event_cb(i_wifi->get(),wifi_callback,LV_EVENT_CLICKED,(void *)this);
            
             ESP_ERROR_CHECK(esp_event_handler_instance_register(AKIL_EVENTS, ESP_EVENT_ANY_ID, change_events, (void *)this, NULL));
         };
@@ -59,6 +60,7 @@ class Header {
         status_t *status;
 
         static void change_events(void* handler_args, esp_event_base_t base, int32_t id, void* event_data);
+        static void wifi_callback(lv_event_t * e);
     protected:   
 };
 

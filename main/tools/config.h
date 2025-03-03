@@ -81,9 +81,8 @@
 #define GLOBAL_FILE "/config/global.bin"
 #define STATUS_FILE "/config/status.bin"
 
-void pre_config(Storage *dsk, status_t *gconf, lamps_t *lamp_list);
+void pre_config(Storage *dsk, status_t *gconf);
 void global_default_config();
-void read_lamps(void);
-void list_lamp(void);
+
 
 #endif

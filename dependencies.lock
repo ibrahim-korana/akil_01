@@ -136,18 +136,30 @@ dependencies:
       path: D:\esp_prj\global\lvgl\icomp\panel
       type: local
     version: 1.0.0
-  smq_tftp:
-    component_hash: null
-    source:
-      path: D:\esp_prj\global\smq_tftp
-      type: local
-    version: 1.0.0
   storage:
     component_hash: null
     source:
       path: D:\esp_prj\global\storage
       type: local
     version: 1.0.0
-manifest_hash: 9fef5a46751137d701a450282ef6ef4b4320261d4bba06831c6766e5733a2fbf
+  tftp_disk_server:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\tftp_disk_server
+      type: local
+    version: 2.0.0
+  tftp_ota_server:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\tftp_ota_server
+      type: local
+    version: 2.0.0
+  tftp_server:
+    component_hash: null
+    source:
+      path: D:\esp_prj\global\tftp_server
+      type: local
+    version: 2.0.0
+manifest_hash: 6eb02c5c9431e9520546c293126ba6fd972f744b2c53e6a72726f1c2688e8a4a
 target: esp32s3
 version: 1.0.0

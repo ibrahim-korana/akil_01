@@ -31,12 +31,14 @@ class Admin_Ayar : public CoreAyar {
             lv_msg_unsubscribe(subsribe0);
             lv_msg_unsubscribe(subsribe1);
             delete ii;
+            delete res;
             delete maxt;
             delete mint;
             delete temp_cal;
             delete temp_read;
             delete udp_sw;
             delete rs_sw;
+            delete lc_sw;
            // printf("unreg\n");
         };
                 
@@ -49,6 +51,7 @@ class Admin_Ayar : public CoreAyar {
         Language *Lng;
         Panel *pan, *pan1;
         IButton *ii;
+        IButton *res;
 
         NIInput *maxt;
         NIInput *mint;
@@ -57,6 +60,7 @@ class Admin_Ayar : public CoreAyar {
 
         ISwitch *udp_sw;
         ISwitch *rs_sw;
+        ISwitch *lc_sw;
 
         void *subsribe0, *subsribe1;
 

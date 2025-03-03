@@ -33,7 +33,9 @@ const char* MAIN_TAG = "MAIN";
 #include "comp/language.h"
 #include "comp/wifi.h"
 #include "comp/udp_server.h"
-#include "smq_tftp.h"
+#include "tftp_ota_server.h"
+#include "tftp_disk_server.h"
+
 
 ESP_EVENT_DEFINE_BASE(LWIFI_EVENTS);
 ESP_EVENT_DEFINE_BASE(UDP_EVENT);
@@ -56,13 +58,35 @@ static lv_disp_draw_buf_t disp_buf;
 Language Lang = Language();
 Udp_Server udp_server = Udp_Server(); 
 lamps_t *lamp_list = NULL;
+TftpOtaServer ota_server(79);
+TftpDiskServer disk_server(69);
 
+
+bool ROLE1_CHANGE = false;
+bool ROLE2_CHANGE = false;
+
+void rs485_callback(char *data, uint8_t sender, transmisyon_t transmisyon);
 
 #include "tools/events.cpp"
 #include "tools/mainconfig.cpp"
 #include "tools/udp_server_callback.cpp"
 #include "screen/startup.h"
 #include "screen/ana_ekran.h"
+
+#include "tools/tools.cpp"
+
+static void status_task(void *arg)
+{
+    if (GlobalConfig.wifi_active==1 || GlobalConfig.rs485_active==1)
+    {
+        if (GlobalConfig.wifi_active==1) 
+          while(GlobalConfig.wifi_connected==0) vTaskDelay(1000/portTICK_PERIOD_MS);
+        vTaskDelay(5000/portTICK_PERIOD_MS);  
+        ESP_ERROR_CHECK(esp_event_post(AKIL_EVENTS, AEV_GET_STATUS, NULL, 0, 10/portTICK_PERIOD_MS));                              
+    }
+    ESP_LOGI("MAIN","Status Isteniyor");
+    vTaskDelete(NULL);
+}
 
 void screen_exit(void *arg, uint8_t Scr_num)
 {
@@ -71,8 +95,7 @@ void screen_exit(void *arg, uint8_t Scr_num)
         startup_destroy(); 
         Read_Temperature();
         lv_msg_subscribe(MSG_TEMPERATURE, temparature_callback, NULL);
-        anaekran_init(&GlobalConfig, screen_exit, &disk, &Lang);
-        anaekran_set_lamp(lamp_list);
+        anaekran_init(&GlobalConfig, screen_exit, &disk, &Lang, lamp_list);
         anaekran_load(); 
         if(GlobalConfig.wifi_active==1) 
         {
@@ -83,7 +106,9 @@ void screen_exit(void *arg, uint8_t Scr_num)
             esp_wifi_set_ps(WIFI_PS_NONE); 
             udp_server.start(0xD002);
             ESP_ERROR_CHECK(esp_event_handler_register(UDP_EVENT, UDP_EVENT_RECV, on_udp_recv, NULL));
-            smq_tftp_start();
+            ota_server.ota_start();
+            disk_server.disk_start();
+            xTaskCreate(status_task,"status_task",2048,NULL,5,NULL);
         }             
     }
 }
@@ -98,16 +123,20 @@ extern "C" void app_main()
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_LOGI(MAIN_TAG,"START");
 
-    pre_config(&disk, &GlobalConfig, lamp_list);
+    pre_config(&disk, &GlobalConfig);
     mainconfig();
+    strcpy((char *)GlobalConfig.current_server_ip, "0");
+    GlobalConfig.have_current_server_ip = false;
 
     read_lamps();
-    list_lamp();
+   // list_lamp();
 
     Lang.init("TR-tr",&disk);
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register(LWIFI_EVENTS, ESP_EVENT_ANY_ID, wifi_change_events, NULL, NULL));
     ESP_ERROR_CHECK(esp_event_handler_instance_register(AKIL_EVENTS, ESP_EVENT_ANY_ID, akil_change_events, NULL, NULL));
+
+    disk.list("/config","*.*");
 
     ESP_LOGI(MAIN_TAG, "Startrup Loading");
     startup_init(&GlobalConfig, screen_exit,&Lang); 

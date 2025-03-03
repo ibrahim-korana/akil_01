@@ -10,11 +10,12 @@
 
 class Content {
     public:
-        Content(status_t *stat, lv_obj_t *par, uint16_t yukseklik,Storage *dsk, Language *lang ){
+        Content(status_t *stat, lv_obj_t *par, uint16_t yukseklik,Storage *dsk, Language *lang, lamps_t *lamp){
             parent = par;
             status = stat;
             disk = dsk;
             Lng = lang;
+            lamp_list = lamp;
             uint16_t w = 0, h = yukseklik;
             w = lv_obj_get_width(parent);
             
@@ -26,7 +27,7 @@ class Content {
         ~Content(){
             free(main_panel);
         };
-        void set_lamp(lamps_t *lamp) {lamp_list = lamp;};
+       
         lv_obj_t *get(void) {return mpanel;}
     private:
         lv_obj_t *parent, *mpanel;

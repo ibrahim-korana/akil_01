@@ -6,7 +6,7 @@
 #include "pages/mainpage.h"
 #include "pages/setup.h"
 #include "pages/termostat.h"
-#include "pages/lambapage.h"
+#include "pages/lamp_page.h"
 
 void Content::page_create()
 {
@@ -48,4 +48,5 @@ void Content::change_events(void* handler_args, esp_event_base_t base, int32_t i
      Content * my = (Content *)handler_args;
      my->page_create(); 
    }
+   
 }

@@ -3,6 +3,10 @@ idf_component_register(
     SRCS "comp/language.cpp"
     SRCS "comp/wifi.cpp"
     SRCS "comp/udp_server.cpp"
+    SRCS "comp/lamp_button.cpp"
+    SRCS "comp/cur_button.cpp"
+    SRCS "comp/jsontool.cpp"
+
     SRCS "screen/startup.cpp"
     SRCS "screen/ana_ekran.cpp"
 
@@ -10,7 +14,7 @@ idf_component_register(
     SRCS "utils/header.cpp"
     SRCS "utils/content.cpp"
 
-    SRCS "utils/pages/lampapage.cpp"
+    SRCS "utils/pages/lamp_page.cpp"
     SRCS "utils/pages/mainpage.cpp"
     SRCS "utils/pages/setup.cpp"
         SRCS "utils/pages/subpages/backlite_ayar.cpp"
@@ -44,6 +48,12 @@ idf_component_register(
     SRCS "images/lamba1_off_60.c"
     SRCS "images/lamba2_on_60.c"
     SRCS "images/lamba2_off_60.c"
+    SRCS "images/Up_60.c"
+    SRCS "images/Down_60.c"
+    SRCS "images/motor.c"
+    SRCS "images/night_60.c"
+    SRCS "images/off_60.c"
+    SRCS "images/manual_60.c"
 
     INCLUDE_DIRS ""
 )

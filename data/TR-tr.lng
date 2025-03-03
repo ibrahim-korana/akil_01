@@ -29,5 +29,9 @@ udpon&UDP On&
 udpoff&UDP Off&
 rson&RS485 On&
 rsoff&RS485 Off&
+reset&Reset&
+teron&Ter.Local&
+teroff&Ter.Remote&
+
 
 

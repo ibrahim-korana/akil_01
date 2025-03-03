@@ -17,17 +17,14 @@ status_t *an_config = NULL;
 exit_callback_t an_callback = NULL;
 Storage *an_dsk;
 Language *Lng;
-lamps_t *lamp_list = NULL;
+lamps_t *lamp_list0 = NULL;
 
 static lv_obj_t *screen_container;
 static lv_style_t style_bg;
 
 LV_IMG_DECLARE(bg);
 
-void anaekran_set_lamp(lamps_t *lamp)
-{
-    lamp_list = lamp;
-}
+
 
 void an_create_styles(void)
 {
@@ -63,19 +60,20 @@ void anaekran_screen()
     Header *pa = new Header(an_config, screen_container, header_h);
     lv_obj_align(pa->get(),LV_ALIGN_TOP_MID,0,0);
 
-    Content *co = new Content(an_config, screen_container, content_h, an_dsk, Lng);
+    Content *co = new Content(an_config, screen_container, content_h, an_dsk, Lng, lamp_list0);
     lv_obj_align_to(co->get(),pa->get(),LV_ALIGN_OUT_BOTTOM_MID,0,0);
 
     Fooder *fo = new Fooder(an_config, screen_container, fooder_h);
     lv_obj_align_to(fo->get(),co->get(),LV_ALIGN_OUT_BOTTOM_MID,0,0);
 }
 
-void anaekran_init(status_t *cnf, exit_callback_t cb, Storage *dsk, Language *lang)
+void anaekran_init(status_t *cnf, exit_callback_t cb, Storage *dsk, Language *lang, lamps_t *lamp)
 {
     an_config = cnf;
     an_callback = cb;
     an_dsk = dsk;
     Lng = lang;
+    lamp_list0 = lamp;
     screen_container = lv_obj_create(NULL);
     an_create_styles();
 

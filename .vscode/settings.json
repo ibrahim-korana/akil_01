@@ -19,6 +19,7 @@
         "tuple": "cpp",
         "utility": "cpp",
         "variant": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "typeinfo": "cpp"
     }
 }

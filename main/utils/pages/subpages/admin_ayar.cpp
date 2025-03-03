@@ -6,6 +6,7 @@
 
 
 LV_IMG_DECLARE(save);
+LV_IMG_DECLARE(defa);
 
 
 void Admin_Ayar::swchg_callback(void * s, lv_msg_t * m)
@@ -47,9 +48,13 @@ void Admin_Ayar::Btn_Callback(void *arg, const void *inx)
         aa->status->isi_okuma_suresi = aa->temp_read->get_value();
         aa->status->udp_active = aa->udp_sw->get_state();
         aa->status->rs485_active = aa->rs_sw->get_state();
+        aa->status->termostat_local = aa->lc_sw->get_state();
         
         ESP_ERROR_CHECK(esp_event_post(AKIL_EVENTS, AEV_CONFIG_SAVE_NORESET, NULL, 0, portMAX_DELAY));        
         lv_msg_send(MSG_CLOSE_CLK,(void *)aa);
+    }
+    if (strcmp((char*)inx,"RESET")==0) { 
+        esp_restart();
     }
 
 }
@@ -67,8 +72,7 @@ void Admin_Ayar::screen_init(void)
 
     lv_obj_t *con = lv_win_get_content(_panel);
     window_panel_style(con,4);
-  
-  
+   
     maxt = new NIInput(con,130,50,Lng->get_text("maxtemp"),status->max_temp,101);
     lv_obj_align(maxt->get(),LV_ALIGN_TOP_LEFT,20,15);
     
@@ -85,6 +89,9 @@ void Admin_Ayar::screen_init(void)
     lv_obj_align(ii->get(),LV_ALIGN_BOTTOM_RIGHT,-10,-10);
     lv_obj_add_flag(ii->get(),LV_OBJ_FLAG_HIDDEN);
 
+    res = new IButton(con,&defa,80,80,255,0,(void *)this,Btn_Callback,"RESET",Lng->get_text("reset"));
+    lv_obj_align(res->get(),LV_ALIGN_BOTTOM_LEFT,10,-10);
+
     udp_sw =  new ISwitch(con,130,60,status->udp_active,Lng->get_text("udpon"),Lng->get_text("udpoff"));
     lv_obj_align(udp_sw->get(),LV_ALIGN_TOP_RIGHT,-30,15);
     udp_sw->set_inx("udp");
@@ -92,5 +99,9 @@ void Admin_Ayar::screen_init(void)
     rs_sw =  new ISwitch(con,130,60,status->rs485_active,Lng->get_text("rson"),Lng->get_text("rsoff"));
     lv_obj_align_to(rs_sw->get(),udp_sw->get(),LV_ALIGN_OUT_BOTTOM_LEFT,0,20);
     rs_sw->set_inx("rs");
+
+    lc_sw =  new ISwitch(con,130,60,status->termostat_local,Lng->get_text("teron"),Lng->get_text("teroff"));
+    lv_obj_align_to(lc_sw->get(),rs_sw->get(),LV_ALIGN_OUT_BOTTOM_LEFT,0,20);
+    lc_sw->set_inx("ter");
 
 }

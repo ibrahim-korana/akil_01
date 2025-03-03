@@ -27,9 +27,7 @@ dependencies:
   iptool:
     path: D:/esp_prj/global/iptool     
   buzzer:
-    path: D:/esp_prj/global/lvgl/icomp/buzzer  
-  smq_tftp:
-    path: D:/esp_prj/global/smq_tftp  
+    path: D:/esp_prj/global/lvgl/icomp/buzzer    
   panel:
     path: D:/esp_prj/global/lvgl/icomp/panel    
   ilabel:
@@ -43,4 +41,10 @@ dependencies:
   nipassword:
     path: D:/esp_prj/global/lvgl/icomp/nipassword 
   niinput:
-    path: D:/esp_prj/global/lvgl/icomp/niinput    
+    path: D:/esp_prj/global/lvgl/icomp/niinput   
+  tftp_server:
+    path: D:/esp_prj/global/tftp_server  
+  tftp_ota_server:
+    path: D:/esp_prj/global/tftp_ota_server 
+  tftp_disk_server:
+    path: D:/esp_prj/global/tftp_disk_server   

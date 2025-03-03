@@ -25,6 +25,7 @@ class SubContent {
         virtual void unregister(void) {};          
         lv_obj_t *get(void) {return mpanel;}
         virtual void icerik(void) {};
+        virtual void set_lamps(lamps_t * lmb) {};
     private:     
         
     protected:  
