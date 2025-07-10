@@ -42,6 +42,7 @@ void Admin_Ayar::Btn_Callback(void *arg, const void *inx)
     vTaskDelay(20/portTICK_PERIOD_MS);
     if (strcmp((char*)inx,"KAYIT")==0) { 
 
+        aa->status->sensor_no = aa->cid->get_value();
         aa->status->max_temp = aa->maxt->get_value();
         aa->status->min_temp = aa->mint->get_value();
         aa->status->isi_kalibrasyon = aa->temp_cal->get_value();
@@ -73,9 +74,12 @@ void Admin_Ayar::screen_init(void)
     lv_obj_t *con = lv_win_get_content(_panel);
     window_panel_style(con,4);
    
+    cid = new NIInput(con,130,50,Lng->get_text("cihazid"),status->sensor_no,110);
+    lv_obj_align(cid->get(),LV_ALIGN_TOP_LEFT,20,15);
+
     maxt = new NIInput(con,130,50,Lng->get_text("maxtemp"),status->max_temp,101);
-    lv_obj_align(maxt->get(),LV_ALIGN_TOP_LEFT,20,15);
-    
+    lv_obj_align_to(maxt->get(),cid->get(),LV_ALIGN_OUT_BOTTOM_LEFT,0,10);
+       
     mint = new NIInput(con,130,50,Lng->get_text("mintemp"),status->min_temp,102);
     lv_obj_align_to(mint->get(),maxt->get(),LV_ALIGN_OUT_BOTTOM_LEFT,0,10);
     

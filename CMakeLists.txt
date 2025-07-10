@@ -2,7 +2,7 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
-set(PROJECT_VER "2.0.0.8")
+set(PROJECT_VER "2.0.0.9")
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(akil_01)
 spiffs_create_partition_image(storage data FLASH_IN_PROJECT)
@@ -24,5 +24,6 @@ add_compile_options("-Wno-deprecated-enum-enum-conversion")
 # 2.0.0.8 03.03.2025
    #Termostat Lokal/Remote olarak düzenlendi
        
-
+# 2.0.0.9 09.07.2025
+   #Admin sayfasına cihaz id eklendi. Termostat bu numara ile gönderiliyor
       

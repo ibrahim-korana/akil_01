@@ -32,6 +32,7 @@ class Admin_Ayar : public CoreAyar {
             lv_msg_unsubscribe(subsribe1);
             delete ii;
             delete res;
+            delete cid;
             delete maxt;
             delete mint;
             delete temp_cal;
@@ -53,6 +54,7 @@ class Admin_Ayar : public CoreAyar {
         IButton *ii;
         IButton *res;
 
+        NIInput *cid;
         NIInput *maxt;
         NIInput *mint;
         NIInput *temp_cal;

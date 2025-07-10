@@ -370,7 +370,11 @@ void rs485_callback(char *data, uint8_t sender, transmisyon_t transmisyon)
         }
         if (strncmp(nm,"TE",2)==0)
         {   
-            
+             char *pp;
+            asprintf(&pp,"TEMP%02d",GlobalConfig.sensor_no);
+
+            if (strcmp(nm,pp)==0)
+            {
             GlobalConfig.current_set = stmp;
             GlobalConfig.temp_current_stat = col;
             //GlobalConfig.temp_stat = sta;
@@ -382,6 +386,8 @@ void rs485_callback(char *data, uint8_t sender, transmisyon_t transmisyon)
             lv_msg_send(MSG_IN_TEMPSET_CHANGED, NULL);
             ESP_LOGI("EVENT","Termostat Set %d Status %d Min %d Max %d",GlobalConfig.current_set,GlobalConfig.temp_current_stat,GlobalConfig.min_temp,GlobalConfig.max_temp );
 
+        }
+        free(pp);
            // ESP_ERROR_CHECK(esp_event_post(ALARM_EVENTS, EVENT_POST_SET, &GlobalConfig.current_set, sizeof(uint8_t), portMAX_DELAY));
            // ESP_ERROR_CHECK(esp_event_post(ALARM_EVENTS, EVENT_CONFIG_SAVE, NULL, 0, portMAX_DELAY)); 
                     
